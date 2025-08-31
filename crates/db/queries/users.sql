@@ -2,6 +2,12 @@
 
 --! get_users : User
 SELECT
-  id,
-  email
+    id,
+    email
 FROM users;
+
+--! create_user
+INSERT INTO
+    users (email)
+VALUES
+    (:email);

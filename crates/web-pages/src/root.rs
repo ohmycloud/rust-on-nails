@@ -33,6 +33,19 @@ pub fn index(users: Vec<User>) -> String {
                     }
                 }
             }
+
+            form {
+                action: "/new_user",
+                method: "POST",
+                label { r#for: "user_email", "Email:"}
+                input {
+                    id: "user_email",
+                    name: "email",
+                    r#type: "email",
+                    required: "true",
+                }
+                button { "Submit" }
+            }
         }
     };
     render(page)

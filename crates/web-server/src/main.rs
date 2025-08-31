@@ -1,6 +1,9 @@
 use std::net::SocketAddr;
 
-use axum::{Extension, Router, routing::get};
+use axum::{
+    Extension, Router,
+    routing::{get, post},
+};
 use tower_livereload::LiveReloadLayer;
 
 mod config;
@@ -16,6 +19,7 @@ async fn main() {
     // build our application with a route
     let app = Router::new()
         .route("/", get(root::loader))
+        .route("/new_user", post(root::new_user_action))
         .route("/static/{*path}", get(static_files::static_path))
         .layer(LiveReloadLayer::new())
         .layer(Extension(config))
