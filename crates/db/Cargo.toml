@@ -1,0 +1,13 @@
+[package]
+name = "db"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+deadpool-postgres = "0.12.1"
+futures = "0.3.31"
+postgres-types = "0.2.9"
+serde = { version = "1.0.219", features = ["derive"] }
+tokio = { version = "1.47.1", features = ["macros", "rt-multi-thread"] }
+tokio-postgres = "0.7.13"
+cornucopia_async = "0.6.0"
