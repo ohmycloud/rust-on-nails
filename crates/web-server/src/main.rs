@@ -6,6 +6,7 @@ use tower_livereload::LiveReloadLayer;
 mod config;
 mod errors;
 mod root;
+mod static_files;
 
 #[tokio::main]
 async fn main() {
@@ -15,6 +16,7 @@ async fn main() {
     // build our application with a route
     let app = Router::new()
         .route("/", get(root::loader))
+        .route("/static/{*path}", get(static_files::static_path))
         .layer(LiveReloadLayer::new())
         .layer(Extension(config))
         .layer(Extension(pool.clone()));

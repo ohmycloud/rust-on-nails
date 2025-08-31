@@ -5,5 +5,10 @@ edition = "2024"
 
 [dependencies]
 db = { version = "0.1.0", path = "../db" }
-dioxus = { version = "0.6.3", default-features = false, features = ["macro", "html", "signals"] }
+web-assets = { version = "0.1.0", path = "../web-assets" }
+dioxus = { version = "0.6.3", default-features = false, features = [
+    "macro",
+    "html",
+    "signals",
+] }
 dioxus-ssr = { version = "0.6.2", default-features = false }

@@ -180,6 +180,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d71b6127be86fdcfddb610f7182ac57211d4b18a3e9c82eb2d17662f2227ad6a"
 
 [[package]]
+name = "cache-busters"
+version = "0.1.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "59d6d44eba5c175d2137023c7762c4670f1ea1b06d21736e44c22b41bb3bb2f6"
+dependencies = [
+ "md5",
+]
+
+[[package]]
 name = "cfg-if"
 version = "1.0.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -894,6 +903,12 @@ dependencies = [
  "cfg-if",
  "digest",
 ]
+
+[[package]]
+name = "md5"
+version = "0.7.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "490cc448043f947bae3cbee9c203358d62dbee0db12107a74be5c30ccfd09771"
 
 [[package]]
 name = "memchr"
@@ -1651,12 +1666,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "web-assets"
+version = "0.1.0"
+dependencies = [
+ "cache-busters",
+ "mime",
+]
+
+[[package]]
 name = "web-pages"
 version = "0.1.0"
 dependencies = [
  "db",
  "dioxus",
  "dioxus-ssr",
+ "web-assets",
 ]
 
 [[package]]
@@ -1670,6 +1694,7 @@ dependencies = [
  "tokio",
  "tokio-util",
  "tower-livereload",
+ "web-assets",
  "web-pages",
 ]
 
