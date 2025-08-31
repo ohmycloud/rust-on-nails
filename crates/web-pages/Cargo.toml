@@ -12,3 +12,4 @@ dioxus = { version = "0.6.3", default-features = false, features = [
     "signals",
 ] }
 dioxus-ssr = { version = "0.6.2", default-features = false }
+daisy_rsx = "0.1.42"
