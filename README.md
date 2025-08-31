@@ -6,4 +6,7 @@ Built with the [Rust on Nails](https://rust-on-nails.com/) architecture for secu
 cargo install cornucopia
 cd crates/db
 cargo build
+
+brew install mold
+cargo install just
 ```
