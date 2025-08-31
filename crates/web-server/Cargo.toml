@@ -11,3 +11,4 @@ serde = { version = "1.0.219", features = ["derive"] }
 tokio = { version = "1.47.1", default-features = false, features = ["macros", "rt-multi-thread"] }
 tokio-util = { version = "0.7.16", default-features = false }
 tower-livereload = "0.9.6"
+web-pages = { version = "0.1.0", path = "../web-pages" }
