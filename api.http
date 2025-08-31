@@ -1,0 +1,5 @@
+### test bad email
+POST http://127.0.0.1:3000/new_user
+Content-Type: application/x-www-form-urlencoded
+
+email=bad-email

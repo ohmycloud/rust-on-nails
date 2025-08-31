@@ -17,3 +17,4 @@ tokio-util = { version = "0.7.16", default-features = false }
 tower-livereload = "0.9.6"
 web-pages = { version = "0.1.0", path = "../web-pages" }
 web-assets = { version = "0.1.0", path = "../web-assets" }
+validator = { version = "0.20.0", features = ["derive"] }
