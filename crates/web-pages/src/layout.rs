@@ -1,5 +1,6 @@
 #![allow(non_snake_case)]
 use dioxus::prelude::*;
+use web_assets::files::tailwind_css;
 
 #[derive(Props, Clone, PartialEq)]
 pub struct BaseLayoutProps {
@@ -134,7 +135,14 @@ pub fn BaseLayout(props: BaseLayoutProps) -> Element {
 #[component]
 pub fn Layout(title: String, children: Element) -> Element {
     rsx! {
-        "{title}",
-        {children}
+        BaseLayout {
+            title,
+            stylesheets: vec![tailwind_css.name.to_string()],
+            header: rsx!(),
+            sidebar: rsx!(),
+            sidebar_header: rsx!(),
+            sidebar_footer: rsx!(),
+            children,
+        }
     }
 }
