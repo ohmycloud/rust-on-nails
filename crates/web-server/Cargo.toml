@@ -7,6 +7,7 @@ edition = "2024"
 axum = { version = "0.8.4", features = ["json", "http1", "tokio"] }
 axum-extra = { version = "0.10.1", features = ["form"] }
 db = { version = "0.1.0", path = "../db" }
+grpc-api = { version = "0.1.0", path = "../grpc-api" }
 serde = { version = "1.0.219", features = ["derive"] }
 tokio = { version = "1.47.1", default-features = false, features = [
     "macros",
@@ -18,3 +19,6 @@ tower-livereload = "0.9.6"
 web-pages = { version = "0.1.0", path = "../web-pages" }
 web-assets = { version = "0.1.0", path = "../web-assets" }
 validator = { version = "0.20.0", features = ["derive"] }
+tonic = { version = "0.14.2", features = ["transport", "router", "server"] }
+tower = { version = "0.5.2", features = ["make", "steer"] }
+hyper = "1.7.0"

@@ -4,8 +4,13 @@ use axum::{
     Extension, Router,
     routing::{get, post},
 };
+use grpc_api::api::users_server::UsersServer;
+use tonic::transport::Server;
 use tower_livereload::LiveReloadLayer;
 
+use crate::api_service::UsersService;
+
+mod api_service;
 mod config;
 mod errors;
 mod root;
@@ -25,12 +30,24 @@ async fn main() {
         .layer(Extension(config))
         .layer(Extension(pool.clone()));
 
+    // Start gRPC server on a different port
+    let grpc_addr = SocketAddr::from(([127, 0, 0, 1], 50051));
+    let grpc_server = Server::builder()
+        .add_service(UsersServer::new(UsersService { pool: pool.clone() }))
+        .serve(grpc_addr);
+
     // run our application
-    let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
+    let addr = SocketAddr::from(([127, 0, 0, 1], 3333));
     println!("listening on http://{}", addr);
+    println!("gRPC server listening on {}", grpc_addr);
     let listener = tokio::net::TcpListener::bind(&addr).await.unwrap();
 
-    axum::serve(listener, app.into_make_service())
-        .await
-        .unwrap();
+    tokio::select! {
+        http_result = axum::serve(listener, app.into_make_service()) => {
+            http_result.unwrap();
+        }
+        grpc_result = grpc_server => {
+            grpc_result.unwrap();
+        }
+    };
 }
