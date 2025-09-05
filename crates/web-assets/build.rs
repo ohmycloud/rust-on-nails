@@ -4,6 +4,10 @@ use cache_busters::generate_static_files_code;
 
 fn main() {
     let static_out_dir = PathBuf::from(env::var("OUT_DIR").unwrap());
-    let asset_dirs = vec![PathBuf::from("./images"), PathBuf::from("./dist")];
+    let asset_dirs = vec![
+        PathBuf::from("./images"),
+        PathBuf::from("./dist"),
+        PathBuf::from("./js"),
+    ];
     generate_static_files_code(&static_out_dir, &asset_dirs, &[]).unwrap();
 }
