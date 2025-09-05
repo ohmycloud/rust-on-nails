@@ -22,3 +22,4 @@ validator = { version = "0.20.0", features = ["derive"] }
 tonic = { version = "0.14.2", features = ["transport", "router", "server"] }
 tower = { version = "0.5.2", features = ["make", "steer"] }
 hyper = "1.7.0"
+anyhow = "1.0.99"

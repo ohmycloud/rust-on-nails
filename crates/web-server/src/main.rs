@@ -17,7 +17,7 @@ mod root;
 mod static_files;
 
 #[tokio::main]
-async fn main() {
+async fn main() -> anyhow::Result<()> {
     let config = config::Config::new();
     let pool = db::create_pool(&config.database_url);
 
@@ -30,24 +30,27 @@ async fn main() {
         .layer(Extension(config))
         .layer(Extension(pool.clone()));
 
-    // Start gRPC server on a different port
+    let addr = SocketAddr::from(([127, 0, 0, 1], 3333));
     let grpc_addr = SocketAddr::from(([127, 0, 0, 1], 50051));
+    println!("listening on http://{}", addr);
+    println!("gRPC server listening on {}", grpc_addr);
+
+    let listener = tokio::net::TcpListener::bind(&addr).await?;
+    let http_server = axum::serve(listener, app.into_make_service());
+
+    // start gRPC server on a different port
     let grpc_server = Server::builder()
         .add_service(UsersServer::new(UsersService { pool: pool.clone() }))
         .serve(grpc_addr);
 
     // run our application
-    let addr = SocketAddr::from(([127, 0, 0, 1], 3333));
-    println!("listening on http://{}", addr);
-    println!("gRPC server listening on {}", grpc_addr);
-    let listener = tokio::net::TcpListener::bind(&addr).await.unwrap();
-
     tokio::select! {
-        http_result = axum::serve(listener, app.into_make_service()) => {
-            http_result.unwrap();
+        http_result = http_server => {
+            http_result?;
         }
         grpc_result = grpc_server => {
-            grpc_result.unwrap();
+            grpc_result?;
         }
     };
+    Ok(())
 }
