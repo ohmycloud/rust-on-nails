@@ -9,4 +9,9 @@ cargo build
 
 brew install mold
 cargo install just
+
+# test gRPC
+brew install grpcui
+cargo run --bin web-server
+grpcui -plaintext localhost:50051
 ```

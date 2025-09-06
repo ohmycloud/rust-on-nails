@@ -4,7 +4,7 @@ use axum::{
     Extension, Router,
     routing::{get, post},
 };
-use grpc_api::api::users_server::UsersServer;
+use grpc_api::{api::users_server::UsersServer, get_file_descriptor_set};
 use tonic::transport::Server;
 use tonic_web::GrpcWebLayer;
 use tower_livereload::LiveReloadLayer;
@@ -34,15 +34,13 @@ async fn main() -> anyhow::Result<()> {
     let addr = SocketAddr::from(([127, 0, 0, 1], 3333));
     let grpc_addr = SocketAddr::from(([127, 0, 0, 1], 50051));
     println!("listening on http://{}", addr);
-    println!("gRPC server listening on {}", grpc_addr);
+    println!("gRPC server listening on http://{}", grpc_addr);
 
     let listener = tokio::net::TcpListener::bind(&addr).await?;
     let http_server = axum::serve(listener, app.into_make_service());
 
     let reflection_service = tonic_reflection::server::Builder::configure()
-        .register_encoded_file_descriptor_set(include_bytes!(
-            "../../grpc-api/generated/api_descriptor_set.bin"
-        ))
+        .register_encoded_file_descriptor_set(get_file_descriptor_set())
         .build_v1()
         .unwrap();
 
