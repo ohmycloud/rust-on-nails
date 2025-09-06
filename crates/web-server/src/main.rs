@@ -6,6 +6,7 @@ use axum::{
 };
 use grpc_api::api::users_server::UsersServer;
 use tonic::transport::Server;
+use tonic_web::GrpcWebLayer;
 use tower_livereload::LiveReloadLayer;
 
 use crate::api_service::UsersService;
@@ -38,8 +39,18 @@ async fn main() -> anyhow::Result<()> {
     let listener = tokio::net::TcpListener::bind(&addr).await?;
     let http_server = axum::serve(listener, app.into_make_service());
 
+    let reflection_service = tonic_reflection::server::Builder::configure()
+        .register_encoded_file_descriptor_set(include_bytes!(
+            "../../grpc-api/generated/api_descriptor_set.bin"
+        ))
+        .build_v1()
+        .unwrap();
+
     // start gRPC server on a different port
     let grpc_server = Server::builder()
+        .accept_http1(true)
+        .layer(GrpcWebLayer::new())
+        .add_service(reflection_service)
         .add_service(UsersServer::new(UsersService { pool: pool.clone() }))
         .serve(grpc_addr);
 
